@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic POS System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .product-list, .cart {
+            width: 48%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .cart h3, .product-list h3 {
+            margin-top: 0;
+        }
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .product-item button {
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .cart-items {
+            margin-bottom: 20px;
+        }
+        .cart-items div {
+            display: flex;
+            justify-content: space-between;
+        }
+        .cart-total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .checkout-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Point of Sale System</h1>
+    <div class="container">
+        <!-- Product List Section -->
+        <div class="product-list">
+            <h3>Products</h3>
+            <div class="product-item">
+                <span>Product 1</span>
+                <span>$10.00</span>
+                <button onclick="addToCart('Product 1', 10.00)">Add to Cart</button>
+            </div>
+            <div class="product-item">
+                <span>Product 2</span>
+                <span>$20.00</span>
+                <button onclick="addToCart('Product 2', 20.00)">Add to Cart</button>
+            </div>
+            <div class="product-item">
+                <span>Product 3</span>
+                <span>$15.00</span>
+                <button onclick="addToCart('Product 3', 15.00)">Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- Shopping Cart Section -->
+        <div class="cart">
+            <h3>Shopping Cart</h3>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will appear here -->
+            </div>
+            <div class="cart-total" id="cart-total">
+                Total: $0.00
+            </div>
+            <button class="checkout-btn" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        // Function to add items to the cart
+        function addToCart(productName, productPrice) {
+            const product = { name: productName, price: productPrice };
+            cart.push(product);
+            updateCart();
+        }
+
+        // Function to update the cart UI
+        function updateCart() {
+            let cartItemsDiv = document.getElementById("cart-items");
+            let total = 0;
+            cartItemsDiv.innerHTML = ''; // Clear current items
+            cart.forEach(item => {
+                let div = document.createElement("div");
+                div.innerHTML = `${item.name} - $${item.price.toFixed(2)}`;
+                cartItemsDiv.appendChild(div);
+                total += item.price;
+            });
+            document.getElementById("cart-total").innerHTML = `Total: $${total.toFixed(2)}`;
+        }
+
+        // Function to handle checkout
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty.");
+                return;
+            }
+            let total = cart.reduce((sum, item) => sum + item.price, 0);
+            alert(`Checkout successful! Total amount: $${total.toFixed(2)}`);
+            cart = []; // Clear cart after checkout
+            updateCart();
+        }
+    </script>
+</body>
+</html>
